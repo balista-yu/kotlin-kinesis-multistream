@@ -1,0 +1,12 @@
+aws:
+  accessKey: test
+  secretKey: test
+  region: ap-northeast-1
+kinesis:
+  endpoint: http://localstack:4566
+  animalsStreamName: arn:aws:kinesis:ap-northeast-1:000000000000:stream/animals-stream
+  foodsStreamName: arn:aws:kinesis:ap-northeast-1:000000000000:stream/foods-stream
+dynamodb:
+  endpoint: http://localstack:4566
+cloudwatch:
+  endpoint: http://localstack:4566

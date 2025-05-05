@@ -1,0 +1,50 @@
+name: 'kotlin-kinesis-multistream'
+
+services:
+  app:
+    container_name: kotlin-kinesis-multistream-app-container
+    image: kotlin-kinesis-multistream/app:dev
+    build:
+      context: .
+      dockerfile: ./infra/docker/app/Dockerfile
+      cache_from:
+        - kotlin-kinesis-multistream/app:cache
+      target: production
+    networks:
+      - default
+    ports:
+      - '8080:8080'
+
+  localstack:
+    container_name: kotlin-kinesis-multistream-localstack-container
+    image: kotlin-kinesis-multistream/localstack:dev
+    build:
+      context: .
+      dockerfile: ./infra/docker/localstack/Dockerfile
+      cache_from:
+        - kotlin-kinesis-multistream/localstack:cache
+    environment:
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=ap-northeast-1
+    ports:
+      - '4566:4566'
+    volumes:
+      - localstack-data-volume:/var/lib/localstack
+      - ./infra/docker/localstack/init/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      default:
+        aliases:
+          - localhost.localstack.cloud
+
+networks:
+  default:
+    name: kotlin-kinesis-multistream
+
+volumes:
+  localstack-data-volume:
+    name: kotlin-kinesis-multistream-localstack-data
+    driver: local
