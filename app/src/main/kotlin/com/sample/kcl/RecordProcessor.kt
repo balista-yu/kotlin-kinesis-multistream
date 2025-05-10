@@ -34,7 +34,9 @@ class RecordProcessor : ShardRecordProcessor {
         try {
             log.info("Processing {} record(s)", processRecordsInput.records().size)
             processRecordsInput.records().forEach { record ->
-                log.info("Processing record pk: {} -- Seq: {}", record.partitionKey(), record.sequenceNumber())
+                val byteArray = ByteArray(record.data().remaining())
+                record.data().get(byteArray)
+                log.info("Processing record: {}", String(byteArray, Charsets.UTF_8))
             }
             processRecordsInput.checkpointer().checkpoint()
         } catch (e: KinesisClientLibRetryableException) {
