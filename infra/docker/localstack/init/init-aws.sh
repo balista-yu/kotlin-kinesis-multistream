@@ -8,8 +8,7 @@ awslocal dynamodb create-table \
     --key-schema \
         AttributeName=name,KeyType=HASH \
     --billing-mode=PAY_PER_REQUEST \
-    --no-deletion-protection-enabled \
-    --stream-specification StreamEnabled=true,StreamViewType=NEW_IMAGE
+    --no-deletion-protection-enabled
 
 awslocal dynamodb create-table \
     --table-name foods \
@@ -18,8 +17,7 @@ awslocal dynamodb create-table \
     --key-schema \
         AttributeName=name,KeyType=HASH \
     --billing-mode=PAY_PER_REQUEST \
-    --no-deletion-protection-enabled \
-    --stream-specification StreamEnabled=true,StreamViewType=NEW_IMAGE
+    --no-deletion-protection-enabled
 
 # create kinesis stream
 awslocal kinesis create-stream \
